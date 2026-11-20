@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Textile GSM & GLM Calculator</title>
+<style>
+  :root {
+    --bg: #f3f5f8;
+    --card: #ffffff;
+    --ink: #17212b;
+    --muted: #5f6b7a;
+    --line: #d9dfe7;
+    --brand: #1f4e79;
+    --brand-dark: #163a5a;
+    --accent: #0f8b6d;
+    --error: #c0392b;
+    --error-bg: #fdecea;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+  .wrap { max-width: 480px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 20px 18px;
+    margin-bottom: 14px;
+  }
+  header h1 { margin: 0 0 4px; font-size: 1.25rem; letter-spacing: .2px; }
+  header p { margin: 0; font-size: .85rem; opacity: .85; }
+
+  /* Mode selector */
+  .modes {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+    background: #e4e9f0; border-radius: 12px; padding: 4px;
+    margin-bottom: 14px;
+  }
+  .mode-btn {
+    border: 0; background: transparent; color: var(--muted);
+    font-size: .92rem; font-weight: 600; line-height: 1.25;
+    padding: 11px 8px; border-radius: 9px; cursor: pointer;
+    font-family: inherit;
+  }
+  .mode-btn small { display: block; font-weight: 400; font-size: .72rem; margin-top: 2px; }
+  .mode-btn.active {
+    background: #fff; color: var(--brand);
+    box-shadow: 0 1px 4px rgba(23,33,43,.15);
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .field { margin-bottom: 16px; }
+  .field:last-of-type { margin-bottom: 0; }
+  label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 6px; }
+  .input-row { position: relative; }
+  input[type="number"] {
+    width: 100%;
+    font-size: 1.1rem; /* 16px+ prevents iOS zoom */
+    padding: 13px 58px 13px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"]:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(31,78,121,.15);
+    background: #fff;
+  }
+  input.invalid { border-color: var(--error); background: var(--error-bg); }
+  .unit {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: .9rem; pointer-events: none;
+  }
+  .error { color: var(--error); font-size: .82rem; margin-top: 6px; display: none; }
+  .error.show { display: block; }
+  .results { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .result {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+    background: #f8fafc;
+  }
+  .result .name { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
+  .result .value { font-size: 1.6rem; font-weight: 700; color: var(--accent); margin: 6px 0 2px; word-break: break-all; }
+  .result .u { font-size: .85rem; color: var(--muted); }
+  .placeholder { text-align: center; color: var(--muted); font-size: .9rem; padding: 6px 0; }
+  .formula { font-size: .8rem; color: var(--muted); line-height: 1.7; }
+  .formula b { color: var(--ink); }
+  button.reset {
+    width: 100%; margin-top: 16px; padding: 12px;
+    font-size: 1rem; font-weight: 600; font-family: inherit;
+    border: 1.5px solid var(--brand); color: var(--brand);
+    background: transparent; border-radius: 10px; cursor: pointer;
+  }
+  button.reset:active { background: rgba(31,78,121,.08); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Textile GSM &amp; GLM Calculator</h1>
+    <p id="subtitle">Find GLM and GSM from roll weight, length and width</p>
+  </header>
+
+  <div class="modes" role="tablist" aria-label="Calculation mode">
+    <button type="button" class="mode-btn active" id="tab-reverse" role="tab" aria-selected="true" aria-controls="form-reverse" data-mode="reverse">
+      Reverse<small>Weight → GSM</small>
+    </button>
+    <button type="button" class="mode-btn" id="tab-forward" role="tab" aria-selected="false" aria-controls="form-forward" data-mode="forward">
+      Forward<small>GSM → Weight</small>
+    </button>
+  </div>
+
+  <!-- MODE 1: Reverse (unchanged) -->
+  <form class="card" id="form-reverse" role="tabpanel" novalidate autocomplete="off" onsubmit="return false">
+    <div class="field">
+      <label for="weight">Fabric Roll Net Weight</label>
+      <div class="input-row">
+        <input type="number" id="weight" inputmode="decimal" step="any" placeholder="e.g. 25.5" aria-describedby="weight-err">
+        <span class="unit">kg</span>
+      </div>
+      <div class="error" id="weight-err" role="alert"></div>
+    </div>
+
+    <div class="field">
+      <label for="length">Fabric Length</label>
+      <div class="input-row">
+        <input type="number" id="length" inputmode="decimal" step="any" placeholder="e.g. 120" aria-describedby="length-err">
+        <span class="unit">m</span>
+      </div>
+      <div class="error" id="length-err" role="alert"></div>
+    </div>
+
+    <div class="field">
+      <label for="width">Finished Fabric Width</label>
+      <div class="input-row">
+        <input type="number" id="width" inputmode="decimal" step="any" placeholder="e.g. 60" aria-describedby="width-err">
+        <span class="unit">inch</span>
+      </div>
+      <div class="error" id="width-err" role="alert"></div>
+    </div>
+
+    <button type="button" class="reset" id="reset">Clear all</button>
+  </form>
+
+  <!-- MODE 2: Forward (new) -->
+  <form class="card" id="form-forward" role="tabpanel" novalidate autocomplete="off" onsubmit="return false" hidden>
+    <div class="field">
+      <label for="f-gsm">GSM</label>
+      <div class="input-row">
+        <input type="number" id="f-gsm" inputmode="decimal" step="any" placeholder="e.g. 180" aria-describedby="f-gsm-err">
+        <span class="unit">g/m²</span>
+      </div>
+      <div class="error" id="f-gsm-err" role="alert"></div>
+    </div>
+
+    <div class="field">
+      <label for="f-width">Finished Fabric Width</label>
+      <div class="input-row">
+        <input type="number" id="f-width" inputmode="decimal" step="any" placeholder="e.g. 60" aria-describedby="f-width-err">
+        <span class="unit">inch</span>
+      </div>
+      <div class="error" id="f-width-err" role="alert"></div>
+    </div>
+
+    <div class="field">
+      <label for="f-length">Fabric Length</label>
+      <div class="input-row">
+        <input type="number" id="f-length" inputmode="decimal" step="any" placeholder="e.g. 120" aria-describedby="f-length-err">
+        <span class="unit">m</span>
+      </div>
+      <div class="error" id="f-length-err" role="alert"></div>
+    </div>
+
+    <button type="button" class="reset" id="f-reset">Clear all</button>
+  </form>
+
+  <!-- Results: Mode 1 -->
+  <section class="card" id="card-reverse" aria-live="polite">
+    <div class="placeholder" id="placeholder">Enter valid values in all fields to see results.</div>
+    <div class="results" id="results" hidden>
+      <div class="result">
+        <div class="name">GLM</div>
+        <div class="value" id="glm">0.00</div>
+        <div class="u">g/m</div>
+      </div>
+      <div class="result">
+        <div class="name">GSM</div>
+        <div class="value" id="gsm">0.00</div>
+        <div class="u">g/m²</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results: Mode 2 -->
+  <section class="card" id="card-forward" aria-live="polite" hidden>
+    <div class="placeholder" id="f-placeholder">Enter valid values in all fields to see results.</div>
+    <div class="results" id="f-results" hidden>
+      <div class="result">
+        <div class="name">GLM</div>
+        <div class="value" id="f-glm">0.00</div>
+        <div class="u">g/m</div>
+      </div>
+      <div class="result">
+        <div class="name">Total Weight</div>
+        <div class="value" id="f-weight">0.00</div>
+        <div class="u">kg</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulas -->
+  <section class="card formula" id="formula-reverse">
+    <b>Formulas (Reverse)</b><br>
+    GLM = (Net Weight × 1000) ÷ Length<br>
+    Width (m) = Width (inch) × 0.0254<br>
+    GSM = GLM ÷ Width (m)
+  </section>
+  <section class="card formula" id="formula-forward" hidden>
+    <b>Formulas (Forward)</b><br>
+    Width (m) = Width (inch) × 0.0254<br>
+    GLM = GSM × Width (m)<br>
+    Total Weight (kg) = (GLM × Length) ÷ 1000
+  </section>
+</div>
+
+<script>
+/* ---------- Shared helpers ---------- */
+function fmt(n) {
+  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function makeValidator(label, el) {
+  return function () {
+    var raw = el.value.trim();
+    if (raw === '') {
+      if (el.validity && el.validity.badInput) {
+        return { ok: false, message: label + ' must be a valid number.' };
+      }
+      return { ok: false, message: label + ' is required.' };
+    }
+    var n = Number(raw);
+    if (!isFinite(n)) return { ok: false, message: label + ' must be a valid number.' };
+    if (n < 0) return { ok: false, message: label + ' cannot be negative.' };
+    if (n === 0) return { ok: false, message: label + ' must be greater than 0.' };
+    return { ok: true, value: n };
+  };
+}
+
+function showError(f, message) {
+  f.err.textContent = message || '';
+  f.err.classList.toggle('show', !!message);
+  f.el.classList.toggle('invalid', !!message);
+  f.el.setAttribute('aria-invalid', message ? 'true' : 'false');
+}
+
+/* ---------- MODE 1: Reverse (calculation unchanged) ---------- */
+var reverse = (function () {
+  var fields = {
+    weight: { el: document.getElementById('weight'), err: document.getElementById('weight-err'), touched: false },
+    length: { el: document.getElementById('length'), err: document.getElementById('length-err'), touched: false },
+    width:  { el: document.getElementById('width'),  err: document.getElementById('width-err'),  touched: false }
+  };
+  fields.weight.validate = makeValidator('Net Weight', fields.weight.el);
+  fields.length.validate = makeValidator('Fabric Length', fields.length.el);
+  fields.width.validate  = makeValidator('Finished Width', fields.width.el);
+
+  var resultsBox = document.getElementById('results');
+  var placeholder = document.getElementById('placeholder');
+  var glmOut = document.getElementById('glm');
+  var gsmOut = document.getElementById('gsm');
+
+  function update() {
+    var values = {};
+    var allValid = true;
+
+    Object.keys(fields).forEach(function (key) {
+      var f = fields[key];
+      var r = f.validate();
+      if (r.ok) {
+        values[key] = r.value;
+        showError(f, '');
+      } else {
+        allValid = false;
+        showError(f, f.touched ? r.message : '');
+      }
+    });
+
+    if (!allValid) {
+      resultsBox.hidden = true;
+      placeholder.hidden = false;
+      return;
+    }
+
+    var glm = (values.weight * 1000) / values.length;
+    var widthM = values.width * 0.0254;
+    var gsm = glm / widthM;
+
+    if (!isFinite(glm) || !isFinite(gsm)) {
+      resultsBox.hidden = true;
+      placeholder.hidden = false;
+      placeholder.textContent = 'Values are too large or small to calculate.';
+      return;
+    }
+
+    glmOut.textContent = fmt(glm);
+    gsmOut.textContent = fmt(gsm);
+    resultsBox.hidden = false;
+    placeholder.hidden = true;
+    placeholder.textContent = 'Enter valid values in all fields to see results.';
+  }
+
+  Object.keys(fields).forEach(function (key) {
+    var f = fields[key];
+    f.el.addEventListener('input', function () { f.touched = true; update(); });
+    f.el.addEventListener('blur', function () { f.touched = true; update(); });
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    Object.keys(fields).forEach(function (key) {
+      fields[key].el.value = '';
+      fields[key].touched = false;
+    });
+    update();
+    fields.weight.el.focus();
+  });
+
+  update();
+  return { update: update, firstInput: fields.weight.el };
+})();
+
+/* ---------- MODE 2: Forward ---------- */
+var forward = (function () {
+  var fields = {
+    gsm:    { el: document.getElementById('f-gsm'),    err: document.getElementById('f-gsm-err'),    touched: false },
+    width:  { el: document.getElementById('f-width'),  err: document.getElementById('f-width-err'),  touched: false },
+    length: { el: document.getElementById('f-length'), err: document.getElementById('f-length-err'), touched: false }
+  };
+  fields.gsm.validate    = makeValidator('GSM', fields.gsm.el);
+  fields.width.validate  = makeValidator('Finished Width', fields.width.el);
+  fields.length.validate = makeValidator('Fabric Length', fields.length.el);
+
+  var resultsBox = document.getElementById('f-results');
+  var placeholder = document.getElementById('f-placeholder');
+  var glmOut = document.getElementById('f-glm');
+  var weightOut = document.getElementById('f-weight');
+
+  function update() {
+    var values = {};
+    var allValid = true;
+
+    Object.keys(fields).forEach(function (key) {
+      var f = fields[key];
+      var r = f.validate();
+      if (r.ok) {
+        values[key] = r.value;
+        showError(f, '');
+      } else {
+        allValid = false;
+        showError(f, f.touched ? r.message : '');
+      }
+    });
+
+    if (!allValid) {
+      resultsBox.hidden = true;
+      placeholder.hidden = false;
+      return;
+    }
+
+    var widthM = values.width * 0.0254;
+    var glm = values.gsm * widthM;
+    var weight = (glm * values.length) / 1000;
+
+    if (!isFinite(glm) || !isFinite(weight)) {
+      resultsBox.hidden = true;
+      placeholder.hidden = false;
+      placeholder.textContent = 'Values are too large or small to calculate.';
+      return;
+    }
+
+    glmOut.textContent = fmt(glm);
+    weightOut.textContent = fmt(weight);
+    resultsBox.hidden = false;
+    placeholder.hidden = true;
+    placeholder.textContent = 'Enter valid values in all fields to see results.';
+  }
+
+  Object.keys(fields).forEach(function (key) {
+    var f = fields[key];
+    f.el.addEventListener('input', function () { f.touched = true; update(); });
+    f.el.addEventListener('blur', function () { f.touched = true; update(); });
+  });
+
+  document.getElementById('f-reset').addEventListener('click', function () {
+    Object.keys(fields).forEach(function (key) {
+      fields[key].el.value = '';
+      fields[key].touched = false;
+    });
+    update();
+    fields.gsm.el.focus();
+  });
+
+  update();
+  return { update: update, firstInput: fields.gsm.el };
+})();
+
+/* ---------- Mode switching ---------- */
+(function () {
+  var modes = {
+    reverse: {
+      tab: document.getElementById('tab-reverse'),
+      panels: ['form-reverse', 'card-reverse', 'formula-reverse'],
+      subtitle: 'Find GLM and GSM from roll weight, length and width'
+    },
+    forward: {
+      tab: document.getElementById('tab-forward'),
+      panels: ['form-forward', 'card-forward', 'formula-forward'],
+      subtitle: 'Find GLM and total fabric weight from GSM, width and length'
+    }
+  };
+
+  function setMode(name) {
+    Object.keys(modes).forEach(function (key) {
+      var m = modes[key];
+      var active = key === name;
+      m.tab.classList.toggle('active', active);
+      m.tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      m.panels.forEach(function (id) {
+        document.getElementById(id).hidden = !active;
+      });
+    });
+    document.getElementById('subtitle').textContent = modes[name].subtitle;
+  }
+
+  Object.keys(modes).forEach(function (key) {
+    modes[key].tab.addEventListener('click', function () { setMode(key); });
+  });
+
+  setMode('reverse');
+})();
+</script>
+</body>
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(error => console.log("Service Worker Error:", error));
+  });
+}
+  </script>
+</html>
