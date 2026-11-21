@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fabric Engine Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Textile Engine Test</title>
 </head>
 <body>
 
 <h2>Textile Calculation Engine Test</h2>
 
-<button onclick="runTest()">Run Test</button>
+<button onclick="runTest()">Run All Tests</button>
 
 <pre id="result"></pre>
 
@@ -19,6 +19,9 @@
 <script>
 function runTest() {
 
+  let output = "";
+
+  // Test 1: Yarn Count Conversion
   const tests = [
     ["Ne", 40, 14.7625],
     ["Tex", 20, 20],
@@ -26,24 +29,54 @@ function runTest() {
     ["Nm", 40, 25]
   ];
 
-  let output = "";
+  output += "YARN COUNT TEST\n\n";
 
   tests.forEach(test => {
     const result = TextileEngine.toTex(
-      test[1],
-      test[0]
+      test[1], test[0]
     );
 
     const passed =
       Math.abs(result - test[2]) < 0.001;
 
-    output +=
-      test[0] + " " + test[1] +
+    output += test[0] + " " + test[1] +
       " = " + result.toFixed(4) +
-      " Tex : " +
-      (passed ? "PASS" : "CHECK") +
+      " Tex : " + (passed ? "PASS" : "CHECK") +
       "\n";
   });
+
+  // Test 2: Fabric Construction
+  const fabric = TextileEngine.calculate({
+    warpCount: 40,
+    warpSystem: "Ne",
+    weftCount: 40,
+    weftSystem: "Ne",
+    epi: 80,
+    ppi: 60,
+    warpCrimp: 5,
+    weftCrimp: 5,
+    widthInch: 60
+  });
+
+  output += "\nFABRIC CONSTRUCTION TEST\n\n";
+
+  output += "Warp Tex: " +
+    fabric.warpTex.toFixed(2) + "\n";
+
+  output += "Weft Tex: " +
+    fabric.weftTex.toFixed(2) + "\n";
+
+  output += "Warp GSM: " +
+    fabric.warpGSM.toFixed(2) + "\n";
+
+  output += "Weft GSM: " +
+    fabric.weftGSM.toFixed(2) + "\n";
+
+  output += "Expected GSM: " +
+    fabric.totalGSM.toFixed(2) + "\n";
+
+  output += "Expected GLM: " +
+    fabric.glm.toFixed(2) + "\n";
 
   document.getElementById("result").textContent = output;
 }
@@ -51,4 +84,3 @@ function runTest() {
 
 </body>
 </html>
-
