@@ -1,1 +1,66 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fabric Construction Calculator</title>
+</head>
+<body>
+
+<h2>Fabric Construction Calculator</h2>
+
+<h3>Warp Details</h3>
+
+<label>Warp Count:</label>
+<input id="warpCount" type="number" value="40">
+
+<label>Warp System:</label>
+<select id="warpSystem">
+  <option value="Ne">Ne</option>
+  <option value="Tex">Tex</option>
+  <option value="Denier">Denier</option>
+  <option value="Nm">Nm</option>
+</select>
+
+<h3>Weft Details</h3>
+
+<label>Weft Count:</label>
+<input id="weftCount" type="number" value="40">
+
+<label>Weft System:</label>
+<select id="weftSystem">
+  <option value="Ne">Ne</option>
+  <option value="Tex">Tex</option>
+  <option value="Denier">Denier</option>
+  <option value="Nm">Nm</option>
+</select>
+
+<h3>Fabric Details</h3>
+
+<label>EPI:</label>
+<input id="epi" type="number" value="80">
+
+<label>PPI:</label>
+<input id="ppi" type="number" value="60">
+
+<label>Warp Crimp (%):</label>
+<input id="warpCrimp" type="number" value="5">
+
+<label>Weft Crimp (%):</label>
+<input id="weftCrimp" type="number" value="5">
+
+<label>Finished Width (Inches):</label>
+<input id="widthInch" type="number" value="60">
+
+<br><br>
+
+<button>Calculate</button>
+
+<div id="result"></div>
+
+<script src="./engine.js"></script>
+
+</body>
+</html>
+
