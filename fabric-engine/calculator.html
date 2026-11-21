@@ -407,8 +407,15 @@ ctx.strokeStyle = "#ffffff";
 ctx.lineWidth = 2;
 
 ctx.beginPath();
-ctx.moveTo(c * cellW + 17, r * cellH + 5);
-ctx.lineTo(c * cellW + 17, (r + 1) * cellH - 5);
+ctx.moveTo(
+  c * cellW + cellW / 2,
+  r * cellH + 5
+);
+
+ctx.lineTo(
+  c * cellW + cellW / 2,
+  (r + 1) * cellH - 5
+);
 ctx.stroke();
 
 ctx.restore();
