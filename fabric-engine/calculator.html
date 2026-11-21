@@ -328,6 +328,14 @@ function drawFabricPreview() {
   preview.innerHTML = "";
   preview.appendChild(canvas);
 }
+  document.getElementById("weaveType")
+  .addEventListener("change", drawWeave);
+
+document.getElementById("weaveType")
+  .addEventListener("change", drawFabricPreview);
+
+drawWeave();
+drawFabricPreview();
 document.getElementById("weaveType")
   .addEventListener("change", drawWeave);
 
