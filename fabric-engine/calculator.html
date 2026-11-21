@@ -1,4 +1,4 @@
-7<!DOCTYPE html>
+87<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -334,10 +334,10 @@ const weftThickness = 17;
 
       ctx.save();
 
-      ctx.shadowColor = "rgba(0,0,0,0.22)";
-      ctx.shadowBlur = 3;
-      ctx.shadowOffsetX = 1;
-      ctx.shadowOffsetY = 2;
+      ctx.shadowColor = "rgba(0,0,0,0.40)";
+ctx.shadowBlur = 6;
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 3;
 
       let gradient;
 
@@ -363,6 +363,19 @@ gradient.addColorStop(1, shadeColor(fabricColor, -55));
   10
 );
         ctx.fill();
+        // Warp Highlight
+ctx.save();
+
+ctx.globalAlpha = 0.20;
+ctx.strokeStyle = "#ffffff";
+ctx.lineWidth = 2;
+
+ctx.beginPath();
+ctx.moveTo(c * cellW + 6, r * cellH + 7);
+ctx.lineTo((c + 1) * cellW - 6, r * cellH + 7);
+ctx.stroke();
+
+ctx.restore();
       }
       else {
         gradient = ctx.createLinearGradient(
@@ -386,6 +399,19 @@ gradient.addColorStop(1, shadeColor(fabricColor, 5));
   10
 );
         ctx.fill();
+        // Weft Highlight
+ctx.save();
+
+ctx.globalAlpha = 0.20;
+ctx.strokeStyle = "#ffffff";
+ctx.lineWidth = 2;
+
+ctx.beginPath();
+ctx.moveTo(c * cellW + 17, r * cellH + 5);
+ctx.lineTo(c * cellW + 17, (r + 1) * cellH - 5);
+ctx.stroke();
+
+ctx.restore();
       }
 
       // Yarn Texture
