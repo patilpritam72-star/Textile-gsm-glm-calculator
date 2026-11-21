@@ -266,6 +266,55 @@ drawWeave();
   
   
 </body>
+          
+<script>
+function drawWeave() {
+
+  const type = document.getElementById("weaveType").value;
+  const grid = document.getElementById("weaveGrid");
+
+  grid.innerHTML = "";
+
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+
+      let isWarpUp = false;
+
+      if (type === "Plain") {
+        isWarpUp = (r + c) % 2 === 0;
+      }
+      else if (type === "Twill") {
+        isWarpUp = (r + c) % 4 < 2;
+      }
+      else if (type === "Satin") {
+        isWarpUp = (c - r * 2 + 20) % 5 === 0;
+      }
+      else if (type === "Herringbone") {
+        let position = Math.floor(r / 4) % 2 === 0
+          ? (r + c) % 4
+          : (r - c + 8) % 4;
+
+        isWarpUp = position < 2;
+      }
+
+      const cell = document.createElement("div");
+
+      cell.style.width = "30px";
+      cell.style.height = "30px";
+      cell.style.background = isWarpUp ? "#0f4c81" : "#e2e8f0";
+      cell.style.border = "1px solid white";
+
+      grid.appendChild(cell);
+    }
+  }
+}
+
+document.getElementById("weaveType")
+  .addEventListener("change", drawWeave);
+
+drawWeave();
+</script>
+          
 </html>
   
    
