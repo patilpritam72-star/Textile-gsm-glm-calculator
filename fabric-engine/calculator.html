@@ -284,7 +284,15 @@ function drawWeave() {
     }
   }
 }
+function shadeColor(hex, percent) {
+  const num = parseInt(hex.slice(1), 16);
 
+  const r = Math.max(0, Math.min(255, (num >> 16) + percent));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 255) + percent));
+  const b = Math.max(0, Math.min(255, (num & 255) + percent));
+
+  return `rgb(${r}, ${g}, ${b})`;
+}
 function drawFabricPreview() {
   const type = document.getElementById("weaveType").value;
   const preview = document.getElementById("fabricPreview");
