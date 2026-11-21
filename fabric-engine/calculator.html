@@ -238,7 +238,8 @@ function drawWeave() {
       let isWarpUp = false;
 
       if (type === "Plain") {
-        isWarpUp = (r + c) % 2 === 0;
+  isWarpUp = (r % 2) === (c % 2);
+}
       }
 
       else if (type === "Twill") {
@@ -246,7 +247,7 @@ function drawWeave() {
       }
 
       else if (type === "Satin") {
-        isWarpUp = (c - r * 2 + 20) % 5 === 0;
+        isWarpUp = (c - r * 2 + 10) % 5 === 0;
       }
 
       else if (type === "Herringbone") {
