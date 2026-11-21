@@ -216,65 +216,12 @@ document.getElementById("result").innerHTML = `
   ">
     <small>EXPECTED GLM</small>
     <h2>${result.glm.toFixed(2)}</h2>
-    <p>Grams / Linear Meter</p>
+        <p>Grams / Linear Meter</p>
   </div>
-  }
-
-</script>
-  {
-
-  const type = document.getElementById("weaveType").value;
-  const grid = document.getElementById("weaveGrid");
-
-  grid.innerHTML = "";
-
-  for (let r = 0; r < 8; r++) {
-    for (let c = 0; c < 8; c++) {
-
-      let isWarpUp = false;
-
-      if (type === "Plain") {
-        isWarpUp = (r + c) % 2 === 0;
-      }
-
-      else if (type === "Twill") {
-        isWarpUp = (r + c) % 4 < 2;
-      }
-
-      else if (type === "Satin") {
-        isWarpUp = (c - r * 2 + 20) % 5 === 0;
-      }
-
-      else if (type === "Herringbone") {
-        let position = Math.floor(r / 4) % 2 === 0
-          ? (r + c) % 4
-          : (r - c + 8) % 4;
-
-        isWarpUp = position < 2;
-      }
-
-      const cell = document.createElement("div");
-
-      cell.style.width = "30px";
-      cell.style.height = "30px";
-      cell.style.background = isWarpUp ? "#0f4c81" : "#e2e8f0";
-      cell.style.border = "1px solid white";
-
-      grid.appendChild(cell);
-    }
-  }
+`;
 }
 
-document.getElementById("weaveType")
-  .addEventListener("change", drawWeave);
-
-drawWeave();
 </script>
-  
-  
-</body>
-          
-<script>
 function drawWeave() {
 
   const type = document.getElementById("weaveType").value;
@@ -290,29 +237,28 @@ function drawWeave() {
       if (type === "Plain") {
         isWarpUp = (r + c) % 2 === 0;
       }
+
       else if (type === "Twill") {
         isWarpUp = (r + c) % 4 < 2;
       }
+
       else if (type === "Satin") {
         isWarpUp = (c - r * 2 + 20) % 5 === 0;
       }
+
       else if (type === "Herringbone") {
         let position = Math.floor(r / 4) % 2 === 0
           ? (r + c) % 4
           : (r - c + 8) % 4;
 
         isWarpUp = position < 2;
-      }cell.style.width = "12px";
-cell.style.height = "12px";
-cell.style.border = "none";
-
-cell.style.background = isWarpUp
-  ? "linear-gradient(135deg, #0f4c81, #3979a8)"
-  : "linear-gradient(135deg, #cbd5e1, #f8fafc)";
+      }
 
       const cell = document.createElement("div");
-
-      
+cell.style.width = "16px";
+cell.style.height = "16px";
+cell.style.borderRadius = "2px";
+cell.style.background = isWarpUp ? "#0f4c81" : "#e2e8f0";
       grid.appendChild(cell);
     }
   }
@@ -322,10 +268,6 @@ document.getElementById("weaveType")
   .addEventListener("change", drawWeave);
 
 drawWeave();
-</script>
-          
-</html>  
-          
 <script>
 function drawWeave() {
 
@@ -372,10 +314,12 @@ function drawWeave() {
 
 document.getElementById("weaveType")
   .addEventListener("change", drawWeave);
+  </script>
 
 drawWeave();
 </script>
-          
-  
+
+</body>
+        </html>
    
 
