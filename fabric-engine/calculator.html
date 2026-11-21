@@ -305,7 +305,8 @@ const fabricColor = document.getElementById("fabricColor").value;
 
   const cellW = 40;
   const cellH = 25;
-
+const warpThickness = 21;
+const weftThickness = 17;
   ctx.fillStyle = "#b9c8d3";
   ctx.fillRect(0, 0, 320, 200);
 
@@ -355,12 +356,12 @@ gradient.addColorStop(1, shadeColor(fabricColor, -55));
 
         ctx.beginPath();
         ctx.roundRect(
-          c * cellW + 2,
-          r * cellH + 1,
-          cellW - 4,
-          cellH - 2,
-          9
-        );
+  c * cellW + 2,
+  r * cellH + (cellH - warpThickness) / 2,
+  cellW - 4,
+  warpThickness,
+  10
+);
         ctx.fill();
       }
       else {
@@ -378,12 +379,12 @@ gradient.addColorStop(1, shadeColor(fabricColor, 5));
 
         ctx.beginPath();
         ctx.roundRect(
-          c * cellW + 1,
-          r * cellH + 2,
-          cellW - 2,
-          cellH - 4,
-          9
-        );
+  c * cellW + (cellW - weftThickness) / 2,
+  r * cellH + 2,
+  weftThickness,
+  cellH - 4,
+  10
+);
         ctx.fill();
       }
 
