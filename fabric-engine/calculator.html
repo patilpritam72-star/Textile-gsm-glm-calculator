@@ -139,8 +139,7 @@
 <p>Warp Direction: Vertical ↓</p>
 <p>Weft Direction: Horizontal →</p>
 <p>Warp Threads (1–8)</p>
-  <div id="weaveGrid"
-    <p>Weft Picks (1–8)</p>
+<div id="weaveGrid"
 style="
 display: grid;
 grid-template-columns: repeat(8, 16px);
@@ -150,6 +149,8 @@ margin-top: 15px;
 width: fit-content;
 ">
 </div>
+
+<p>Weft Picks (1–8)</p>
 
 <p style="font-size:13px;">
 Blue = Warp Up | Light Grey = Weft Up
@@ -224,57 +225,8 @@ document.getElementById("result").innerHTML = `
 `;
 }
 
-</script>
+</script><script>
 function drawWeave() {
-
-  const type = document.getElementById("weaveType").value;
-  const grid = document.getElementById("weaveGrid");
-
-  grid.innerHTML = "";
-
-  for (let r = 0; r < 8; r++) {
-    for (let c = 0; c < 8; c++) {
-
-      let isWarpUp = false;
-
-      if (type === "Plain") {
-  isWarpUp = (r % 2) === (c % 2);
-}
-      }
-
-      else if (type === "Twill") {
-        isWarpUp = (r + c) % 4 < 2;
-      }
-
-      else if (type === "Satin") {
-        isWarpUp = (c - r * 2 + 10) % 5 === 0;
-      }
-
-      else if (type === "Herringbone") {
-        let position = Math.floor(r / 4) % 2 === 0
-          ? (r + c) % 4
-          : (r - c + 8) % 4;
-
-        isWarpUp = position < 2;
-      }
-
-      const cell = document.createElement("div");
-cell.style.width = "16px";
-cell.style.height = "16px";
-cell.style.borderRadius = "2px";
-cell.style.background = isWarpUp ? "#0f4c81" : "#e2e8f0";
-      grid.appendChild(cell);
-    }
-  }
-}
-
-document.getElementById("weaveType")
-  .addEventListener("change", drawWeave);
-
-drawWeave();
-<script>
-function drawWeave() {
-
   const type = document.getElementById("weaveType").value;
   const grid = document.getElementById("weaveGrid");
 
@@ -318,7 +270,6 @@ function drawWeave() {
 
 document.getElementById("weaveType")
   .addEventListener("change", drawWeave);
-  </script>
 
 drawWeave();
 </script>
