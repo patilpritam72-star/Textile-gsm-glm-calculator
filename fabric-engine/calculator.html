@@ -307,8 +307,17 @@ const fabricColor = document.getElementById("fabricColor").value;
   const cellH = 25;
 const warpThickness = 21;
 const weftThickness = 17;
-  ctx.fillStyle = "#b9c8d3";
-  ctx.fillRect(0, 0, 320, 200);
+  // Fabric Base Shading
+const baseGradient = ctx.createLinearGradient(
+  0, 0, 320, 200
+);
+
+baseGradient.addColorStop(0, "#d2dce3");
+baseGradient.addColorStop(0.5, "#aebfcb");
+baseGradient.addColorStop(1, "#c5d2da");
+
+ctx.fillStyle = baseGradient;
+ctx.fillRect(0, 0, 320, 200);
 
   for (let r = 0; r < 8; r++) {
     for (let c = 0; c < 8; c++) {
