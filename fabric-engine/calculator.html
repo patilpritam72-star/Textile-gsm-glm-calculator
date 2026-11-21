@@ -138,7 +138,8 @@
 <div id="weaveGrid"
 style="
 display: grid;
-grid-template-columns: repeat(8, 30px);
+grid-template-columns: repeat(8, 12px);
+gap: 1px;
 gap: 2px;
 margin-top: 15px;
 ">
@@ -295,15 +296,17 @@ function drawWeave() {
           : (r - c + 8) % 4;
 
         isWarpUp = position < 2;
-      }
+      }cell.style.width = "12px";
+cell.style.height = "12px";
+cell.style.border = "none";
+
+cell.style.background = isWarpUp
+  ? "linear-gradient(135deg, #0f4c81, #3979a8)"
+  : "linear-gradient(135deg, #cbd5e1, #f8fafc)";
 
       const cell = document.createElement("div");
 
-      cell.style.width = "30px";
-      cell.style.height = "30px";
-      cell.style.background = isWarpUp ? "#0f4c81" : "#e2e8f0";
-      cell.style.border = "1px solid white";
-
+      
       grid.appendChild(cell);
     }
   }
