@@ -156,7 +156,12 @@ width: fit-content;
 Blue = Warp Up | Light Grey = Weft Up
 </p>
   <h3>Real Fabric Preview</h3>
-
+<label>Fabric Colour:</label>
+<input
+  type="color"
+  id="fabricColor"
+  value="#245b85"
+>
 <div id="fabricPreview"
 style="
 width: 100%;
@@ -283,7 +288,7 @@ function drawWeave() {
 function drawFabricPreview() {
   const type = document.getElementById("weaveType").value;
   const preview = document.getElementById("fabricPreview");
-
+const fabricColor = document.getElementById("fabricColor").value;
   const canvas = document.createElement("canvas");
   canvas.width = 320;
   canvas.height = 200;
@@ -333,10 +338,10 @@ function drawFabricPreview() {
           (c + 1) * cellW, r * cellH
         );
 
-        gradient.addColorStop(0, "#17496c");
-        gradient.addColorStop(0.35, "#397ba5");
-        gradient.addColorStop(0.7, "#28658d");
-        gradient.addColorStop(1, "#123e60");
+        gradient.addColorStop(0, shadeColor(fabricColor, -35));
+gradient.addColorStop(0.35, shadeColor(fabricColor, 30));
+gradient.addColorStop(0.7, shadeColor(fabricColor, 5));
+gradient.addColorStop(1, shadeColor(fabricColor, -55));
 
         ctx.fillStyle = gradient;
 
@@ -388,6 +393,8 @@ document.getElementById("weaveType")
   .addEventListener("change", drawFabricPreview);
 
 drawWeave();
+  document.getElementById("fabricColor")
+  .addEventListener("input", drawFabricPreview);
 drawFabricPreview();
 </script>
 
