@@ -109,14 +109,33 @@ if (
   
   const result = TextileEngine.calculate(data);
 
-  document.getElementById("result").innerHTML =
-    "<h3>Calculation Result</h3>" +
-    "Expected GSM: " + result.totalGSM.toFixed(2) + "<br>" +
-    "Expected GLM: " + result.glm.toFixed(2) + " g/m";
-}
-</script>
   
+document.getElementById("result").innerHTML = `
+  <h3>Calculation Result</h3>
 
-</body>
-</html>
+  <div style="
+    background: white;
+    padding: 18px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border-left: 5px solid #16a34a;
+  ">
+    <small>EXPECTED GSM</small>
+    <h2>${result.totalGSM.toFixed(2)}</h2>
+    <p>Grams / Square Meter</p>
+  </div>
+
+  <div style="
+    background: white;
+    padding: 18px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border-left: 5px solid #2563eb;
+  ">
+    <small>EXPECTED GLM</small>
+    <h2>${result.glm.toFixed(2)}</h2>
+    <p>Grams / Linear Meter</p>
+  </div>
+`;
+  
 
