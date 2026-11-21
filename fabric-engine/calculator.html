@@ -506,7 +506,27 @@ ctx.restore();
 ctx.restore();
     }
   }
+// Fabric Edge & Border Effect
+ctx.save();
 
+// Outer edge shadow
+const edgeGradient = ctx.createLinearGradient(
+  0, 0, 320, 200
+);
+
+edgeGradient.addColorStop(0, "rgba(0,0,0,0.18)");
+edgeGradient.addColorStop(0.5, "rgba(0,0,0,0)");
+edgeGradient.addColorStop(1, "rgba(0,0,0,0.22)");
+
+ctx.fillStyle = edgeGradient;
+ctx.fillRect(0, 0, 320, 200);
+
+// Inner border
+ctx.strokeStyle = "rgba(255,255,255,0.45)";
+ctx.lineWidth = 2;
+ctx.strokeRect(2, 2, 316, 196);
+
+ctx.restore();
   preview.innerHTML = "";
   preview.appendChild(canvas);
 }
