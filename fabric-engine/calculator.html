@@ -386,12 +386,13 @@ gradient.addColorStop(1, shadeColor(fabricColor, 5));
         );
         ctx.fill();
       }
-// Yarn Texture
+
+      // Yarn Texture
 ctx.save();
 
-ctx.globalAlpha = 0.30;
+ctx.globalAlpha = 0.45;
 ctx.strokeStyle = "#ffffff";
-ctx.lineWidth = 0.8;
+ctx.lineWidth = 1.2;
 
 if (warpUp) {
 
@@ -419,8 +420,7 @@ if (warpUp) {
 
 }
 
-ctx.restore();
-      ctx.restore();
+ctx.restore();ctx.restore();
     }
   }
 
