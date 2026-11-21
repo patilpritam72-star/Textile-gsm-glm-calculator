@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+7<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -386,7 +386,27 @@ gradient.addColorStop(1, shadeColor(fabricColor, 5));
         );
         ctx.fill();
       }
+// Yarn Texture
+ctx.save();
 
+ctx.globalAlpha = 0.12;
+ctx.strokeStyle = "#ffffff";
+ctx.lineWidth = 0.6;
+
+for (let i = 0; i < 5; i++) {
+  ctx.beginPath();
+  ctx.moveTo(
+    c * cellW + 4,
+    r * cellH + 4 + i * 4
+  );
+  ctx.lineTo(
+    (c + 1) * cellW - 4,
+    r * cellH + 4 + i * 4
+  );
+  ctx.stroke();
+}
+
+ctx.restore();
       ctx.restore();
     }
   }
