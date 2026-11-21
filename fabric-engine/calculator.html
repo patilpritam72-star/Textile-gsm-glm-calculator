@@ -342,6 +342,11 @@ ctx.shadowOffsetY = 3;
       let gradient;
 
       if (warpUp) {
+        // 3D Warp Interlacement
+ctx.shadowColor = "rgba(0,0,0,0.45)";
+ctx.shadowBlur = 8;
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 4;
         gradient = ctx.createLinearGradient(
           c * cellW, r * cellH,
           (c + 1) * cellW, r * cellH
@@ -378,6 +383,11 @@ ctx.stroke();
 ctx.restore();
       }
       else {
+        // 3D Weft Interlacement
+ctx.shadowColor = "rgba(0,0,0,0.25)";
+ctx.shadowBlur = 3;
+ctx.shadowOffsetX = 1;
+ctx.shadowOffsetY = 1;
         gradient = ctx.createLinearGradient(
           c * cellW, r * cellH,
           c * cellW, (r + 1) * cellH
