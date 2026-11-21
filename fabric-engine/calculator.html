@@ -319,6 +319,20 @@ baseGradient.addColorStop(1, "#c5d2da");
 ctx.fillStyle = baseGradient;
 ctx.fillRect(0, 0, 320, 200);
 
+
+ctx.globalAlpha = 0.30;
+ctx.strokeStyle = "#334155";
+ctx.lineWidth = 1;
+
+for (let y = 2; y < 200; y += 4) {
+  ctx.beginPath();
+  ctx.moveTo(0, y);
+  ctx.lineTo(320, y);
+  ctx.stroke();
+}
+
+ctx.restore();
+
   for (let r = 0; r < 8; r++) {
     // Micro Surface Texture
 ctx.save();
