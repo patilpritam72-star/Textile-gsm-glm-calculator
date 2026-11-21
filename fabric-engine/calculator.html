@@ -80,6 +80,21 @@ function calculateFabric() {
     widthInch: Number(document.getElementById("widthInch").value)
   };
 
+if (
+  data.warpCount <= 0 ||
+  data.weftCount <= 0 ||
+  data.epi <= 0 ||
+  data.ppi <= 0 ||
+  data.widthInch <= 0 ||
+  data.warpCrimp < 0 ||
+  data.weftCrimp < 0
+) {
+  document.getElementById("result").textContent =
+    "Error: Please enter valid positive values. Crimp cannot be negative.";
+
+  return;
+}
+  
   const result = TextileEngine.calculate(data);
 
   document.getElementById("result").innerHTML =
