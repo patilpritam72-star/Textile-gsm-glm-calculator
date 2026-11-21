@@ -369,10 +369,10 @@ gradient.addColorStop(1, shadeColor(fabricColor, -55));
           c * cellW, (r + 1) * cellH
         );
 
-        gradient.addColorStop(0, "#e9eff3");
-        gradient.addColorStop(0.4, "#cbd8e1");
-        gradient.addColorStop(0.75, "#dce5eb");
-        gradient.addColorStop(1, "#aebfcb");
+        gradient.addColorStop(0, shadeColor(fabricColor, 65));
+gradient.addColorStop(0.4, shadeColor(fabricColor, 45));
+gradient.addColorStop(0.75, shadeColor(fabricColor, 25));
+gradient.addColorStop(1, shadeColor(fabricColor, 5));
 
         ctx.fillStyle = gradient;
 
