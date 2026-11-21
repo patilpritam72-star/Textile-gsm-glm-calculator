@@ -77,6 +77,17 @@ function runTest() {
 
   output += "Expected GLM: " +
     fabric.glm.toFixed(2) + "\n";
+  // Test 3: Expected vs Actual Comparison
+
+const comparison = TextileEngine.compare(180, 200);
+
+output += "\nEXPECTED VS ACTUAL TEST\n\n";
+
+output += "Difference: " +
+  comparison.difference.toFixed(2) + " GSM\n";
+
+output += "Difference %: " +
+  comparison.differencePercent.toFixed(2) + "%\n";
 
   document.getElementById("result").textContent = output;
 }
