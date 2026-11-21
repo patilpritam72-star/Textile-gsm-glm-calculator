@@ -389,21 +389,34 @@ gradient.addColorStop(1, shadeColor(fabricColor, 5));
 // Yarn Texture
 ctx.save();
 
-ctx.globalAlpha = 0.12;
+ctx.globalAlpha = 0.30;
 ctx.strokeStyle = "#ffffff";
-ctx.lineWidth = 0.6;
+ctx.lineWidth = 0.8;
 
-for (let i = 0; i < 5; i++) {
-  ctx.beginPath();
-  ctx.moveTo(
-    c * cellW + 4,
-    r * cellH + 4 + i * 4
-  );
-  ctx.lineTo(
-    (c + 1) * cellW - 4,
-    r * cellH + 4 + i * 4
-  );
-  ctx.stroke();
+if (warpUp) {
+
+  // Horizontal yarn fibers
+  for (let i = 0; i < 5; i++) {
+    const y = r * cellH + 4 + i * 4;
+
+    ctx.beginPath();
+    ctx.moveTo(c * cellW + 5, y);
+    ctx.lineTo((c + 1) * cellW - 5, y);
+    ctx.stroke();
+  }
+
+} else {
+
+  // Vertical yarn fibers
+  for (let i = 0; i < 5; i++) {
+    const x = c * cellW + 5 + i * 7;
+
+    ctx.beginPath();
+    ctx.moveTo(x, r * cellH + 4);
+    ctx.lineTo(x, (r + 1) * cellH - 4);
+    ctx.stroke();
+  }
+
 }
 
 ctx.restore();
