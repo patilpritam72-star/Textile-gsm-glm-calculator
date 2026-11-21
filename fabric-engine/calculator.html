@@ -279,70 +279,6 @@ function drawWeave() {
     }
   }
 }
-function drawFabricPreview() {
-  const type = document.getElementById("weaveType").value;
-  const preview = document.getElementById("fabricPreview");
-
-  const canvas = document.createElement("canvas");
-  canvas.width = 320;
-  canvas.height = 200;
-
-  const ctx = canvas.getContext("2d");
-
-  const cellW = 40;
-  const cellH = 25;
-
-  for (let r = 0; r < 8; r++) {
-    for (let c = 0; c < 8; c++) {
-
-      let warpUp = false;
-
-      if (type === "Plain") {
-        warpUp = (r + c) % 2 === 0;
-      }
-      else if (type === "Twill") {
-        warpUp = (r + c) % 4 < 2;
-      }
-      else if (type === "Satin") {
-        warpUp = (c - r * 2 + 20) % 5 === 0;
-      }
-      else if (type === "Herringbone") {
-        let position = Math.floor(r / 4) % 2 === 0
-          ? (r + c) % 4
-          : (r - c + 8) % 4;
-
-        warpUp = position < 2;
-      }
-
-      ctx.fillStyle = "#b7c9d8";
-      ctx.fillRect(c * cellW, r * cellH, cellW, cellH);
-
-      ctx.fillStyle = warpUp ? "#245b85" : "#d9e1e8";
-      ctx.fillRect(c * cellW, r * cellH, cellW, cellH);
-
-      ctx.strokeStyle = "rgba(255,255,255,0.25)";
-      ctx.strokeRect(c * cellW, r * cellH, cellW, cellH);
-    }
-  }
-
-  preview.innerHTML = "";
-  preview.appendChild(canvas);
-}
-  document.getElementById("weaveType")
-  .addEventListener("change", drawWeave);
-
-document.getElementById("weaveType")
-  .addEventListener("change", drawFabricPreview);
-
-drawWeave();
-drawFabricPreview();
-document.getElementById("weaveType")
-  .addEventListener("change", drawWeave);
-
-document.getElementById("weaveType")
-  .addEventListener("change", drawFabricPreview);
-
-drawWeave();
 
 function drawFabricPreview() {
   const type = document.getElementById("weaveType").value;
@@ -445,7 +381,14 @@ function drawFabricPreview() {
   preview.innerHTML = "";
   preview.appendChild(canvas);
 }
-  
+  document.getElementById("weaveType")
+  .addEventListener("change", drawWeave);
+
+document.getElementById("weaveType")
+  .addEventListener("change", drawFabricPreview);
+
+drawWeave();
+drawFabricPreview();
 </script>
 
 </body>
