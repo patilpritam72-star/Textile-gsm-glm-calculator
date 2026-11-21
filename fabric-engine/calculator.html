@@ -55,11 +55,40 @@
 
 <br><br>
 
-<button>Calculate</button>
+<button onclick="calculateFabric()">Calculate</button>
 
 <div id="result"></div>
 
 <script src="./engine.js"></script>
+  
+<script>
+function calculateFabric() {
+
+  const data = {
+    warpCount: Number(document.getElementById("warpCount").value),
+    warpSystem: document.getElementById("warpSystem").value,
+
+    weftCount: Number(document.getElementById("weftCount").value),
+    weftSystem: document.getElementById("weftSystem").value,
+
+    epi: Number(document.getElementById("epi").value),
+    ppi: Number(document.getElementById("ppi").value),
+
+    warpCrimp: Number(document.getElementById("warpCrimp").value),
+    weftCrimp: Number(document.getElementById("weftCrimp").value),
+
+    widthInch: Number(document.getElementById("widthInch").value)
+  };
+
+  const result = TextileEngine.calculate(data);
+
+  document.getElementById("result").innerHTML =
+    "<h3>Calculation Result</h3>" +
+    "Expected GSM: " + result.totalGSM.toFixed(2) + "<br>" +
+    "Expected GLM: " + result.glm.toFixed(2) + " g/m";
+}
+</script>
+  
 
 </body>
 </html>
